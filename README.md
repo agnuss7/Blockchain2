@@ -1,1 +1,2 @@
-# Blockchain2
+# Blockchain užduotis 2: bitcoin imitacija
+
