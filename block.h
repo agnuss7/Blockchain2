@@ -6,18 +6,31 @@
 #include <ctime>
 #include "hash.h"
 
-struct Transaction{
-    int Id;
+class Transaction{
+private:
+    std::string Id;
     std::string Input;
     std::string Output;
     int Amount;
-    //std::string Hash;
+public:
+    Transaction(std::string i, std::string o, int a){
+        Input=i;
+        Output=o;
+        Amount=a;
+        Id=hash(i+o+std::to_string(a));
+    }
+    std::string GetI() { return Input; }
+    std::string GetO() { return Output; }
+    int GetA() { return Amount; }
+    std::string GetID() { return Id; }
+    // demonstracijai
+    void SetA(int a){Amount=a;}
 };
 
 struct User {
     std::string Name;
     std::string Public;
-    unsigned int Balance;
+   // unsigned int Balance;
 };
 
 class Block {
@@ -40,8 +53,7 @@ public:
     void Merk(){
         std::vector<std::string> MHash;
         for (Transaction x:Tran){
-            std::string temp=std::to_string(x.Id)+x.Input+x.Output+std::to_string(x.Amount);
-            MHash.push_back(hash(temp));
+            MHash.push_back(hash(x.GetID()));
         }
         while(MHash.size()>1){
             int k=MHash.size();
@@ -57,12 +69,13 @@ public:
     }
     void Add(Transaction a) {
     Tran.push_back(a);
-    //Merk();
     //std::cout<<a.Output<<"\n";
     }
     std::string GetHash(){ return Hash;}
+    std::string GetMerk(){ return Merkle;}
     int GetNonce() {return Nonce;}
     int GetDif() {return DifT;}
+    std::vector<Transaction> GetT() {return Tran;}
     void SetPH(std::string p){
         PrevHash=p;
     }
@@ -75,7 +88,7 @@ public:
             Timestamp=std::asctime(std::localtime(&result));
             n++;
             can=hash(std::to_string(Version)+PrevHash+Merkle+Timestamp+std::to_string(n));
-            //std::cout<<std::to_string(Version)+Merkle+std::to_string(n)<<" "<<can<<"  "<<n<<"\n";
+            //std::cout<<std::to_string(Version)+PrevHash+Merkle+Timestamp+std::to_string(n)<<" "<<can<<"  "<<n<<"\n";
             done=true;
             for(int i=0;i<DifT;i++){
                 if(can[i]!='0'){
@@ -85,8 +98,6 @@ public:
         }
         Nonce=n;
         Hash=can;
-
-        std::cout<<"_____________________________________________________\n\n| Hash: "<<can<<"\n| Merkle root: "<<Merkle<<"\n| Nonce: "<<n<<"\n______________________________________________\n\t\t|\n\t\t|\n\t\t|\n\t\tV\n";
     }
 };
 

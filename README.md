@@ -1,5 +1,5 @@
 ﻿# Blockchain užduotis 2: bitcoin imitacija
-## v0.1
+## v0.2
 Ši pirmoji programa sugeneruos 1000 vartotojų, 10000 tranzakcijų tarp jų ir eiliškai sudės jas į blokus po 100. Blokai bus "iškasti" ir įdėti į blockchain'ą (į vektorių). Grandinė atsivaizduos konsolėje.
 
 ![input](pic/Capture.PNG)
