@@ -79,11 +79,16 @@ public:
     void SetPH(std::string p){
         PrevHash=p;
     }
-    void Mine(){
+    bool Mine(unsigned int count=UCHAR_MAX){
+        unsigned int i=0;
         std::string can;
         int n=-1;
         bool done=false;
         while(!done){
+            i++;
+            if(i==count){
+                return false;
+            }
             std::time_t result = std::time(nullptr);
             Timestamp=std::asctime(std::localtime(&result));
             n++;
@@ -98,6 +103,7 @@ public:
         }
         Nonce=n;
         Hash=can;
+        return true;
     }
 };
 
