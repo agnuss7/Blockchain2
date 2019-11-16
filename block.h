@@ -14,6 +14,12 @@ struct Transaction{
     //std::string Hash;
 };
 
+struct User {
+    std::string Name;
+    std::string Public;
+    unsigned int Balance;
+};
+
 class Block {
 private:
     std::string Hash;
@@ -24,10 +30,12 @@ private:
     int Nonce;
     int DifT;
     std::vector<Transaction> Tran;
+
 public:
     Block(int ver=1, int D=1){
         Version=ver;
         DifT=D;
+        PrevHash="";
     }
     void Merk(){
         std::vector<std::string> MHash;
@@ -49,10 +57,12 @@ public:
     }
     void Add(Transaction a) {
     Tran.push_back(a);
-    std::cout<<a.Output<<"\n";
+    //Merk();
+    //std::cout<<a.Output<<"\n";
     }
     std::string GetHash(){ return Hash;}
     int GetNonce() {return Nonce;}
+    int GetDif() {return DifT;}
     void SetPH(std::string p){
         PrevHash=p;
     }
@@ -61,8 +71,11 @@ public:
         int n=-1;
         bool done=false;
         while(!done){
+            std::time_t result = std::time(nullptr);
+            Timestamp=std::asctime(std::localtime(&result));
             n++;
-            can=hash(std::to_string(Version)+Merkle+std::to_string(n));
+            can=hash(std::to_string(Version)+PrevHash+Merkle+Timestamp+std::to_string(n));
+            //std::cout<<std::to_string(Version)+Merkle+std::to_string(n)<<" "<<can<<"  "<<n<<"\n";
             done=true;
             for(int i=0;i<DifT;i++){
                 if(can[i]!='0'){
@@ -72,11 +85,8 @@ public:
         }
         Nonce=n;
         Hash=can;
-        std::time_t result = std::time(nullptr);
-        Timestamp=std::asctime(std::localtime(&result));
-        std::cout<<"\n\n"<<can<<"\n";
-           // std::time_t result = std::time(nullptr);
-            //std::cout << std::asctime(std::localtime(&result))
+
+        std::cout<<"_____________________________________________________\n\n| Hash: "<<can<<"\n| Merkle root: "<<Merkle<<"\n| Nonce: "<<n<<"\n______________________________________________\n\t\t|\n\t\t|\n\t\t|\n\t\tV\n";
     }
 };
 
