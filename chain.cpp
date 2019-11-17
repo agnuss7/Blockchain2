@@ -48,8 +48,10 @@ std::string FindN(std::string p){
 }
 
 
+
 std::string Names[]={"James ","Giorno ","Trish ","Rowan ","John ","Bella ","Lisa ","Saul ","Alita ","Levi ","Emeth ","Nicole ","Larry ","Rem ","Alex ","Scarlet ","Mitchell ", "Phoenix ","River ","Jojo ", "Joseph ", "Jonathan ","Ceasar ","Iggy ","Jean ", "Pierre ","Igor ", "Al ","Edd ","Jeff ","Blair ","Suzie ","Sora ","Elijah ","Adrian ","Erina ","Gordon "};
 std::string LNames[]={"Kazan","Una","von Stroheim","Jenkins","Garland","Thor","Lugosi","Heavens","Styx","Woo","Leaven","Argentum","Ramone","Black","Reilly","Sheppard","Worth","Sunderland","Pendleton","Joestar","Quentin","Wright","Alsup","Halloway","Eggstein","Avdol","Araki","Bates","Ora","Quatro","Speedwagon","Fuentes","Newman","Ramsey","Freeman"};
+
 
 
 int main() {
@@ -100,7 +102,7 @@ int main() {
                     std::cout << "Vartotojas " << FindN(t.GetI()) << " neturi " << t.GetA()
                               << " Nignog'u pervedimui.\n";
                     j--;
-		    delT(t);
+		            delT(t);
                 }
             }
             B[i].Merk();
