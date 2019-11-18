@@ -8,7 +8,16 @@ Kiekviena tranzakcija dabar turi savo ID, kuris yra įeigos (mokančiojo public 
 
 ## Tranzakcijų validavimas: balanso tikrinimas
 Nors tai ir centralizuota grandinė ir balansą būtų galima tikrinti tiesiai vartotojo piniginėje, tačiau aš pamaniau, jog įdomiau būtų tai padaryt labiau kaip veikia tikros kriptovaliutos. Prieš tranzakciją įdedant į bloką, pereinama visa grandinė, kiekvieno jos bloko tranzakcijos, pagal siuntėjo public key skaičiuojant, ar jis turi (ar jam buvo persiųsta)
-reikiamą kiekį Nignog'ų. Jei ne tranzakcija atmetama. Tiesa, mano grandinėj genesis blokas yra sudarytas iš netikrinamų tranzakcijų, kad kai kurie vartotojai turėtų pervestų pinigų.
-Čia feedback'as dedant tranzakcijas į bloką:
+reikiamą kiekį Nignog'ų. Jei ne tranzakcija atmetama - ištrinama iš pool'o. Tiesa, mano grandinėj genesis blokas yra sudarytas iš netikrinamų tranzakcijų, kad kai kurie vartotojai turėtų pervestų pinigų.
+Čia atsakas dedant tranzakcijas į blokus:
 ![input](pic/names.PNG)
 
+
+## Blokų kasimas
+Dabar iš tranzakcijų pool'o atsitiktinai parenkamos tranzakcijos 5-iems blokams kandidatams ir kiekvienas jų bandomas kasti. Jei per 1000 hash'ų nerandamas reikiamas, bandoma su kitu. Jei nė vienas nerandamas per reikiamą hash'inimo skaičių, skaičius didinamas dvigubai. Kai vienas iš blokų pagaliau iškasamas, jo tranzakcijos ištrinamos iš pool'o, o jis pats prijungiamas prie grandinės.
+
+## Blokų peržiūra
+Kai tranzakcijų pool'as pasibaigia ir grandinė baigta, galima paprašyti peržiūrėt pasirinkto jos bloko antraštę ir tranzakcijas.
+
+![input](pic/asks.PNG)
+![input](pic/13.PNG)

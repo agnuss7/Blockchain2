@@ -31,7 +31,7 @@ public:
     }
 };
 std::string hash(std::string a) {
-    int leng=40;
+    int leng=45;
     std::vector < bool > bin;
     int nn = 0;
     for (char x: a) {

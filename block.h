@@ -13,6 +13,7 @@ private:
     std::string Output;
     int Amount;
 public:
+    // inicializavimas
     Transaction(std::string i, std::string o, int a){
         Input=i;
         Output=o;
@@ -45,28 +46,34 @@ private:
     std::vector<Transaction> Tran;
 
 public:
+    // inicializavimas su numatytais parametrais
     Block(int ver=1, int D=1){
         Version=ver;
         DifT=D;
         PrevHash="";
+        Merkle="";
     }
+    // merkle root hash sudarymas. Tai turbut turetu buti daroma pridejus kiekviena tranzakcija, bet tai labai ilgai uztruktu
     void Merk(){
-        std::vector<std::string> MHash;
-        for (Transaction x:Tran){
-            MHash.push_back(hash(x.GetID()));
-        }
-        while(MHash.size()>1){
-            int k=MHash.size();
-            for(int i=0;i<k/2;i++){
-                MHash[i]=hash(MHash[i]+MHash[i+1]);
-                MHash.erase(MHash.begin()+i+1);
+        if(!Tran.empty()) {
+            std::vector <std::string> MHash;
+            for (Transaction x:Tran) {
+                MHash.push_back(hash(x.GetID()));
             }
-            if(k%2>0){
-                MHash[k/2]=hash(MHash[k/2]+MHash[k/2]);
+            while (MHash.size() > 1) {
+                int k = MHash.size();
+                for (int i = 0; i < k / 2; i++) {
+                    MHash[i] = hash(MHash[i] + MHash[i + 1]);
+                    MHash.erase(MHash.begin() + i + 1);
+                }
+                if (k % 2 > 0) {
+                    MHash[k / 2] = hash(MHash[k / 2] + MHash[k / 2]);
+                }
             }
+            Merkle = MHash[0];
         }
-        Merkle=MHash[0];
     }
+    // tranzakcijos pridejimas
     void Add(Transaction a) {
     Tran.push_back(a);
     //std::cout<<a.Output<<"\n";
@@ -79,7 +86,8 @@ public:
     void SetPH(std::string p){
         PrevHash=p;
     }
-    bool Mine(unsigned int count=UCHAR_MAX){
+    // kasimas
+    bool Mine(unsigned int count=4294967295){
         unsigned int i=0;
         std::string can;
         int n=-1;
