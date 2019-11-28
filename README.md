@@ -1,23 +1,33 @@
 ﻿# Blockchain užduotis 2: bitcoin imitacija
-## v0.2
+## v0.3
 Tranzakcijų validacija ir realistiškesnis blokų prijungimas prie grandinės. Taip pat vartotojai dabar turi tikrus vardus!
 
-## Tranzakcijų validavimas: hash'as
-Kiekviena tranzakcija dabar turi savo ID, kuris yra įeigos (mokančiojo public key), išeigos (to, kuriam moka, public key) ir Nignog'ų (mano valiuta) skaičiaus hash'as. Prieš įdedant tranzakciją į pool'ą patikrinama, ar minėtieji atributai susideda į ID. Jei ne, tranzakcija atmetama.
-![input](pic/forged.PNG)
-
-## Tranzakcijų validavimas: balanso tikrinimas
-Nors tai ir centralizuota grandinė ir balansą būtų galima tikrinti tiesiai vartotojo piniginėje, tačiau aš pamaniau, jog įdomiau būtų tai padaryt labiau kaip veikia tikros kriptovaliutos. Prieš tranzakciją įdedant į bloką, pereinama visa grandinė, kiekvieno jos bloko tranzakcijos, pagal siuntėjo public key skaičiuojant, ar jis turi (ar jam buvo persiųsta)
-reikiamą kiekį Nignog'ų. Jei ne tranzakcija atmetama - ištrinama iš pool'o. Tiesa, mano grandinėj genesis blokas yra sudarytas iš netikrinamų tranzakcijų, kad kai kurie vartotojai turėtų pervestų pinigų.
-Čia atsakas dedant tranzakcijas į blokus:
-![input](pic/names.PNG)
-
-
-## Blokų kasimas
-Dabar iš tranzakcijų pool'o atsitiktinai parenkamos tranzakcijos 5-iems blokams kandidatams ir kiekvienas jų bandomas kasti. Jei per 1000 hash'ų nerandamas reikiamas, bandoma su kitu. Jei nė vienas nerandamas per reikiamą hash'inimo skaičių, skaičius didinamas dvigubai. Kai vienas iš blokų pagaliau iškasamas, jo tranzakcijos ištrinamos iš pool'o, o jis pats prijungiamas prie grandinės.
-
-## Blokų peržiūra
-Kai tranzakcijų pool'as pasibaigia ir grandinė baigta, galima paprašyti peržiūrėt pasirinkto jos bloko antraštę ir tranzakcijas.
-
-![input](pic/asks.PNG)
-![input](pic/13.PNG)
+## Merkle medžio šaknies funkcija
+Įgivendinau merkle funkciją (bloko klasės metodą) panašiai kaip libbitcoin bibliotekoje:
+```cpp
+std::string Merk(){
+        if(!Tran.empty()) {
+            // surasoma i merkle medi visos bloko tranzakcijos Tran (uzhasuotos)
+            std::vector <std::string> MHash;
+            for (Transaction x:Tran) {
+                MHash.push_back(hash(x.GetID()));
+            }
+            // merkle root hash'as sudaromas
+            while (MHash.size() > 1) {
+                std::vector<std::string> new_mhash;
+                if(MHash.size()%2 > 0){
+                    MHash.push_back(MHash.back());
+                }
+                for (auto i = MHash.begin(); i != MHash.end(); i+=2) {
+                    std::string aa=*i;
+                    std::string bb=*(i+1);
+                    std::string cc=aa+bb;
+                    new_mhash.push_back(hash(cc));
+                }
+                MHash=new_mhash;
+            }
+            Merkle = MHash[0];
+            return MHash[0];
+        } else return "";
+    }
+```
