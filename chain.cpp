@@ -51,14 +51,14 @@ std::string FindN(std::string p){
     return "";
 }
 
-std::string Names[]={"James ","Giorno ","Mai ","Trish ","Walter ","Miles ","Jill ","Keith ","Rowan ","John ","Bella ","Lisa ","Saul ","Alita ","Levi ","Emeth ","Nicole ","Larry ","Rem ","Alex ","Scarlet ","Mitchell ", "Phoenix ","River ","Jojo ", "Joseph ", "Jonathan ","Ceasar ","Iggy ","Jean ", "Pierre ","Igor ", "Al ","Edd ","Jeff ","Blair ","Suzie ","Sora ","Elijah ","Adrian ","Erina ","Gordon "};
-std::string LNames[]={"Kazan","Erewell","Zeppelli","Una","Valentine","Chambers","Romero","von Stroheim","Jenkins","Garland","Thor","Lugosi","Heavens","Styx","Woo","Leaven","Argentum","Ramone","Noir","Reilly","Sheppard","Worth","Sunderland","Pendleton","Joestar","Quentin","Wright","Alsup","Halloway","Eggstein","Avdol","Araki","Bates","Ora","Quatro","Speedwagon","Fuentes","Newman","Ramsey","Freeman"};
+std::string Names[]={"James ","Abe ","Giorno ","Mai ","Owen ","Trish ","Walter ","Miles ","Jill ","Keith ","Rowan ","John ","Bella ","Lisa ","Saul ","Alita ","Levi ","Emeth ","Nicole ","Larry ","Rem ","Alex ","Scarlet ","Mitchell ", "Phoenix ","River ","Jojo ", "Joseph ", "Jonathan ","Ceasar ","Iggy ","Jean ", "Pierre ","Igor ", "Al ","Edd ","Jeff ","Blair ","Suzie ","Sora ","Elijah ","Adrian ","Erina ","Gordon "};
+std::string LNames[]={"Kazan","Erewell","Zeppelli","Una","Redfield","Drakeson","Valentine","Chambers","Romero","von Stroheim","Jenkins","Garland","Thor","Lugosi","Heavens","Styx","Woo","Leaven","Argentum","Ramone","Noir","Reilly","Sheppard","Worth","Sunderland","Pendleton","Joestar","Quentin","Wright","Alsup","Halloway","Eggstein","Avdol","Araki","Bates","Ora","Quatro","Speedwagon","Fuentes","Newman","Ramsey","Freeman"};
 
 int main() {
     srand(time(NULL));
     for(int i=0;i<1000;i++){
         User u;
-        u.Name=Names[rand()%42]+LNames[rand()%39];
+        u.Name=Names[rand()%44]+LNames[rand()%41];
         u.Public=hash(u.Name+base[rand()%64]+std::to_string(rand()%500));
         users.push_back(u);
     }
