@@ -24,6 +24,7 @@ void delT(Transaction t){
         }
     }
 }
+
 // tikrinama, ar vartotojas turi pakankamai lesu pervedimui
 bool checkTrans (Transaction x){
     std::string in=x.GetI();
@@ -51,14 +52,13 @@ std::string FindN(std::string p){
 }
 
 std::string Names[]={"James ","Giorno ","Mai ","Trish ","Walter ","Miles ","Jill ","Keith ","Rowan ","John ","Bella ","Lisa ","Saul ","Alita ","Levi ","Emeth ","Nicole ","Larry ","Rem ","Alex ","Scarlet ","Mitchell ", "Phoenix ","River ","Jojo ", "Joseph ", "Jonathan ","Ceasar ","Iggy ","Jean ", "Pierre ","Igor ", "Al ","Edd ","Jeff ","Blair ","Suzie ","Sora ","Elijah ","Adrian ","Erina ","Gordon "};
-std::string LNames[]={"Kazan","Erewell","Zeppelli","Una","Valentine","Chambers","von Stroheim","Jenkins","Garland","Thor","Lugosi","Heavens","Styx","Woo","Leaven","Argentum","Ramone","Noir","Reilly","Sheppard","Worth","Sunderland","Pendleton","Joestar","Quentin","Wright","Alsup","Halloway","Eggstein","Avdol","Araki","Bates","Ora","Quatro","Speedwagon","Fuentes","Newman","Ramsey","Freeman"};
+std::string LNames[]={"Kazan","Erewell","Zeppelli","Una","Valentine","Chambers","Romero","von Stroheim","Jenkins","Garland","Thor","Lugosi","Heavens","Styx","Woo","Leaven","Argentum","Ramone","Noir","Reilly","Sheppard","Worth","Sunderland","Pendleton","Joestar","Quentin","Wright","Alsup","Halloway","Eggstein","Avdol","Araki","Bates","Ora","Quatro","Speedwagon","Fuentes","Newman","Ramsey","Freeman"};
 
 int main() {
     srand(time(NULL));
-
     for(int i=0;i<1000;i++){
         User u;
-        u.Name=Names[rand()%42]+LNames[rand()%38];
+        u.Name=Names[rand()%42]+LNames[rand()%39];
         u.Public=hash(u.Name+base[rand()%64]+std::to_string(rand()%500));
         users.push_back(u);
     }
@@ -66,9 +66,9 @@ int main() {
         Transaction t(users[rand()%1000].Public,users[rand()%1000].Public,rand()%50+1);
         // kai kurios tranzakcijos "suklastotos"
         if(rand()%1989==333) {
-            //t.SetA(rand()%500);
+            t.SetA(rand()%500);
         }
-        if(hash(t.GetI()+t.GetO()+std::to_string(t.GetA()))==t.GetID()){
+        if(hash(t.GetI()+t.GetO()+std::to_string(t.GetA())+t.GetT())==t.GetID()){
             tran.push_back(t);
         } else {
             std::cout<<"Tranzakcija "<<t.GetID()<<" suklastota.\n";

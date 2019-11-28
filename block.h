@@ -11,6 +11,7 @@ private:
     std::string Id;
     std::string Input;
     std::string Output;
+    std::string Timestamp;
     int Amount;
 public:
     // inicializavimas
@@ -18,11 +19,14 @@ public:
         Input=i;
         Output=o;
         Amount=a;
-        Id=hash(i+o+std::to_string(a));
+        std::time_t result = std::time(nullptr);
+        Timestamp=std::asctime(std::localtime(&result));
+        Id=hash(i+o+std::to_string(a)+Timestamp);
     }
     std::string GetI() { return Input; }
     std::string GetO() { return Output; }
     int GetA() { return Amount; }
+    std::string GetT() { return Timestamp; }
     std::string GetID() { return Id; }
     // demonstracijai
     void SetA(int a){Amount=a;}
@@ -54,24 +58,30 @@ public:
         Merkle="";
     }
     // merkle root hash sudarymas. Tai turbut turetu buti daroma pridejus kiekviena tranzakcija, bet tai labai ilgai uztruktu
-    void Merk(){
+    std::string Merk(){
         if(!Tran.empty()) {
+            // surasoma i merkle medi visos bloko tranzakcijos (uzhasuotos)
             std::vector <std::string> MHash;
             for (Transaction x:Tran) {
                 MHash.push_back(hash(x.GetID()));
             }
+            // merkle root hash'as sudaromas
             while (MHash.size() > 1) {
-                int k = MHash.size();
-                for (int i = 0; i < k / 2; i++) {
-                    MHash[i] = hash(MHash[i] + MHash[i + 1]);
-                    MHash.erase(MHash.begin() + i + 1);
+                std::vector<std::string> new_mhash;
+                if(MHash.size()%2 > 0){
+                    MHash.push_back(MHash.back());
                 }
-                if (k % 2 > 0) {
-                    MHash[k / 2] = hash(MHash[k / 2] + MHash[k / 2]);
+                for (auto i = MHash.begin(); i != MHash.end(); i+=2) {
+                    std::string aa=*i;
+                    std::string bb=*(i+1);
+                    std::string cc=aa+bb;
+                    new_mhash.push_back(hash(cc));
                 }
+                MHash=new_mhash;
             }
             Merkle = MHash[0];
-        }
+            return MHash[0];
+        } else return "";
     }
     // tranzakcijos pridejimas
     void Add(Transaction a) {
